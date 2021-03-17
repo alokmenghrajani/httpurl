@@ -75,9 +75,11 @@ func IsDomainOrSubdomainOf(u *url.URL, domain string) bool {
 	return IsDomain(u, domain) || IsSubdomainOf(u, domain)
 }
 
+type ExpandMap map[string]interface{}
+
 // Expand enables replacing a URL template with concrete values. E.g.
 // Expand(http://example.com/{a}/xyz/{b}, {"a": "foo", "b": 123}) results in http://example.com/foo/xyz/123
-func Expand(u *url.URL, values map[string]interface{}) error {
+func Expand(u *url.URL, values ExpandMap) error {
 	p := strings.Split(u.Path, "/")
 	for i, v := range p {
 		if strings.HasPrefix(v, "{") && strings.HasSuffix(v, "}") {
