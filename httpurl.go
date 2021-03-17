@@ -1,6 +1,7 @@
 package httpurl
 
 import (
+	"errors"
 	"fmt"
 	"net/url"
 	"path"
@@ -72,4 +73,22 @@ func IsSubdomainOf(u *url.URL, domain string) bool {
 // http://www.example.com/, IsDomainOrSubdomainOf returns true for "www.example.com", "example.com", and "com".
 func IsDomainOrSubdomainOf(u *url.URL, domain string) bool {
 	return IsDomain(u, domain) || IsSubdomainOf(u, domain)
+}
+
+// Expand enables replacing a URL template with concrete values. E.g.
+// Expand(http://example.com/{a}/xyz/{b}, {"a": "foo", "b": 123}) results in http://example.com/foo/xyz/123
+func Expand(u *url.URL, values map[string]interface{}) error {
+	p := strings.Split(u.Path, "/")
+	for i, v := range p {
+		if strings.HasPrefix(v, "{") && strings.HasSuffix(v, "}") {
+			templateName := v[1 : len(v)-1]
+			value, exists := values[templateName]
+			if !exists {
+				return errors.New(fmt.Sprintf("failed to find %s", templateName))
+			}
+			p[i] = fmt.Sprintf("%v", value)
+		}
+	}
+	u.Path = path.Join(p...)
+	return nil
 }
