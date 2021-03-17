@@ -24,10 +24,9 @@ func NewBuilder() *Builder {
 	}
 }
 
-// FromString returns a Builder. If the rawurl isn't an absolute URI, you are expected to set the scheme and host or
-// else the Build() function will error.
+// FromString returns a Builder.
 func FromString(rawurl string) (*Builder, error) {
-	u, err := url.Parse(rawurl)
+	u, err := url.ParseRequestURI(rawurl)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to parse string URL: %s", rawurl)
 	}
@@ -41,7 +40,7 @@ func FromString(rawurl string) (*Builder, error) {
 // FromLiteral returns a Builder. The rawurl parameter must be a literal string since the type is not exported. This
 // function panics instead of returning an error.
 func FromLiteral(rawurl literal) *Builder {
-	u, err := url.Parse(string(rawurl))
+	u, err := url.ParseRequestURI(string(rawurl))
 	if err != nil {
 		panic(fmt.Sprintf("failed to parse literal URL: %s", rawurl))
 	}
