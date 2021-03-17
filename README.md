@@ -10,7 +10,11 @@ Minimalistic Go library to make handling http URLs easier
 - query manipulation requiring going back and forth from `url.Query` to `url.RawQuery`.
 - a general desire to follow a Builder pattern, inspired by Java's [OkHttpUrl](https://github.com/square/okhttp/blob/okhttp_4.9.x/okhttp/src/main/kotlin/okhttp3/HttpUrl.kt) library
 
-# example
+# Documentation
+
+[https://pkg.go.dev/github.com/alokmenghrajani/httpurl](https://pkg.go.dev/github.com/alokmenghrajani/httpurl)
+
+# Example
 
 Instead of:
 
