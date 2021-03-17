@@ -2,8 +2,17 @@ package httpurl
 
 import (
 	"github.com/stretchr/testify/require"
+	"net/url"
 	"testing"
 )
+
+func TestClone(t *testing.T) {
+	u := MustParse("http://a:secret@example.com/foo/bar?a=1&b=2")
+	c := Clone(u)
+	u.User = url.UserPassword("x", "shush")
+	u.Path = "/"
+	require.Equal(t, "http://a:secret@example.com/foo/bar?a=1&b=2", c.String())
+}
 
 func TestMustParse(t *testing.T) {
 	panicF := func() {

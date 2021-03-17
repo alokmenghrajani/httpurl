@@ -16,6 +16,12 @@ func MustParse(rawurl string) *url.URL {
 	return u
 }
 
+func Clone(u *url.URL) *url.URL {
+	// No need to clone Userinfo because it's immutable (see https://github.com/golang/go/issues/38351)
+	t := *u
+	return &t
+}
+
 // AddQueryParam adds the value to key in the query parameters. It appends to any existing values associated with key.
 func AddQueryParam(u *url.URL, key string, value interface{}) {
 	q := u.Query()
