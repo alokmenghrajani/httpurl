@@ -91,12 +91,12 @@ func TestIsDomainOrSubdomainOf(t *testing.T) {
 	require.True(t, IsDomainOrSubdomainOf(u, "com"))
 }
 
-func TestExpand(t *testing.T) {
+func TestExpandPath(t *testing.T) {
 	u := MustParse("http://example.com/{a}/xyz/{b}")
-	err := Expand(u, ExpandMap{})
+	err := ExpandPath(u, ExpandMap{})
 	require.Error(t, err)
 
-	err = Expand(u, ExpandMap{"a": "foo", "b": 123})
+	err = ExpandPath(u, ExpandMap{"a": "foo", "b": 123})
 	require.NoError(t, err)
 	require.Equal(t, "http://example.com/foo/xyz/123", u.String())
 }
