@@ -4,7 +4,7 @@
 [![coverage](https://coveralls.io/repos/github/alokmenghrajani/httpurl/badge.svg?branch=main&service=github)](https://coveralls.io/github/alokmenghrajani/httpurl)
 [![report](https://goreportcard.com/badge/github.com/alokmenghrajani/httpurl)](https://goreportcard.com/report/github.com/alokmenghrajani/httpurl)
 
-Minimalistic Go library to make handling http URLs easier
+Minimalistic Go library to make handling http URLs easier.
 
 `httpurl` complements Golang's `url.URL` from the `net/url` standard library. The desire to implement `httpurl` stems
 from:
@@ -24,18 +24,43 @@ from:
 Instead of:
 
 ```
-	u, err := url.Parse("http://example.com/")
-	if err != nil {
-        // Need to handle this error
-	}
-	q := u.Query()
-	q.Add("code", "1234")
-	u.RawQuery = q.Encode()
+u, err := url.Parse("http://example.com/")
+if err != nil {
+    // Need to handle this error
+}
+q := u.Query()
+q.Add("code", "1234")
+u.RawQuery = q.Encode()
 ```
 
 You can do:
 
 ```
-    u := httpurl.MustParse("http://example.com")
-    AddQueryParam(u, "code", 1234)
+u := httpurl.MustParse("http://example.com")
+AddQueryParam(u, "code", 1234)
+```
+
+<p align="center">* * *</p>
+
+And instead of :
+
+```
+basePath := "https://example.com/users/%d/products/%s/"
+
+baseURL, err := url.Parse(fmt.Sprintf(basePath, userId, productId))
+if err != nil {
+    // Need to handle this error
+}
+```
+
+You can do:
+
+```
+basePath := "https://example.com/users/{userId}/products/{productId}/"
+
+baseURL := httpurl.MustParse(basePath)
+httpurl.ExpandPath(baseURL, httpurl.ExpandMap{
+  "userId": userId,
+  "productId": productId,
+})
 ```

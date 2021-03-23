@@ -91,6 +91,6 @@ func ExpandPath(u *url.URL, values ExpandMap) error {
 			p[i] = fmt.Sprintf("%v", value)
 		}
 	}
-	u.Path = path.Join(p...)
+	u.Path = strings.Join(p, "/")
 	return nil
 }

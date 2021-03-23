@@ -99,4 +99,10 @@ func TestExpandPath(t *testing.T) {
 	err = ExpandPath(u, ExpandMap{"a": "foo", "b": 123})
 	require.NoError(t, err)
 	require.Equal(t, "http://example.com/foo/xyz/123", u.String())
+
+	u = MustParse("http://example.com/{a}/xyz/{b}/")
+	err = ExpandPath(u, ExpandMap{"a": "foo", "b": 123})
+	require.NoError(t, err)
+	require.Equal(t, "http://example.com/foo/xyz/123/", u.String())
+
 }
